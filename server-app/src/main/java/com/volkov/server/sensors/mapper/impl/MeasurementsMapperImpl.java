@@ -1,6 +1,7 @@
 package com.volkov.server.sensors.mapper.impl;
 
 import com.volkov.server.sensors.dto.CreateMeasurementsDto;
+import com.volkov.server.sensors.dto.CreateSensorDto;
 import com.volkov.server.sensors.dto.MeasurementsDto;
 import com.volkov.server.sensors.dto.SensorDto;
 import com.volkov.server.sensors.entity.Measurements;
@@ -29,8 +30,10 @@ public class MeasurementsMapperImpl implements MeasurementsMapper {
                 .temp(entity.getTemp())
                 .rain(entity.getRain())
                 .timeMeasurements(entity.getTimeMeasurements())
-                .sensor(SensorDto.builder()
+                .sensor(CreateSensorDto.builder()
                         .id(entity.getSensor().getId())
+                        .name(entity.getSensor().getName())
+                        .active(entity.getSensor().getActive())
                         .build())
                 .build();
     }

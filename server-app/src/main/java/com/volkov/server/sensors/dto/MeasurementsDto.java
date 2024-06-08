@@ -22,5 +22,5 @@ public class MeasurementsDto {
 
     private OffsetDateTime timeMeasurements;
 
-    private SensorDto sensor;
+    private CreateSensorDto sensor;
 }
