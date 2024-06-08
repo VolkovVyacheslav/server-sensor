@@ -72,6 +72,7 @@ public class SensorServiceImpl implements SensorService {
 
     private Sensor disable(Sensor sensor){
         sensor.setActive(false);
+        log.info(LOG_APPLICATION_LEVEL + "Now sensor with id: " + sensor.getId() + " is disable!");
         return sensorRepository.save(sensor);
     }
 
