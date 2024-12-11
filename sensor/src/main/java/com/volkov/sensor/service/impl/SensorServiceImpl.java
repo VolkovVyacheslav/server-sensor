@@ -24,8 +24,7 @@ public class SensorServiceImpl implements SensorService {
     private final SensorRestClient sensorRestClient;
     @Override
     public SensorDto sensorMeasurement() {
-        log.info("Now sensor with name:" + configurationSensorService.getSensorName()
-                + " and ID:" + configurationSensorService.getSensorUUID() +" sending measurements data");
+        log.info("Now sensor with name:{} and ID:{} sending measurements data", configurationSensorService.getSensorName(), configurationSensorService.getSensorUUID());
         return SensorDto.builder()
                 .id(configurationSensorService.getSensorUUID())
                 .temperature(Math.random()*50)
@@ -43,7 +42,7 @@ public class SensorServiceImpl implements SensorService {
                 throw new ServerException();
             }
             sensor.setUuid(registeredSensor.key());
-            log.info("now sensor " + sensor.getName() + " is registered with UUID:" + sensor.getUuid());
+            log.info("now sensor {} is registered with UUID:{}", sensor.getName(), sensor.getUuid());
         }catch (Exception e){
             log.error("Server is not connected!");
             throw new ServerException();

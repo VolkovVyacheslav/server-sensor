@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,19 +29,19 @@ public class Scheduler {
     private final MeasurementsService measurementsService;
 
     @Scheduled(cron = "${server.verify.processing.cron}")
-    public void verifySensors() throws Exception {
+    public void verifySensors()  {
        log.info(LOG_APPLICATION_LEVEL + "New job for verify active sensor started!");
         List<UUID> activeSensorsID = sensorService.allActive()
                 .stream()
                 .map(createSensorDto -> createSensorDto.getId())
-                .toList();
+                .collect(Collectors.toList());
         List<UUID> activeMeasurementsSensorsId = measurementsService
                 .getMeasurementsAfterTimestamp(OffsetDateTime.now().minusMinutes(1L))
                 .stream().map(measurementsDto -> measurementsDto.getSensor().getId())
-                .toList();
+                .collect(Collectors.toList());
         sensorService.isOffline(activeSensorsID.stream()
                 .filter(activeSensorId-> !activeMeasurementsSensorsId.contains(activeSensorId))
-                .toList());
+                .collect(Collectors.toList()));
        log.info(LOG_APPLICATION_LEVEL + "New job for verify active sensor complete!");
     }
 }

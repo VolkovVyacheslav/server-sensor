@@ -41,17 +41,17 @@ public class SensorsController {
 
 
     @PostMapping("/registration")
-     public ResponseEntity<?> createSensors(@Valid @RequestBody RegistrationSensor payload,
-                                          BindingResult bindingResult,
-                                          UriComponentsBuilder uriComponentsBuilder) throws BindException {
-        if(bindingResult.hasErrors()){
-            if (bindingResult instanceof BindException exception){
+    public ResponseEntity<?> createSensors(@Valid @RequestBody RegistrationSensor payload,
+                                           BindingResult bindingResult,
+                                           UriComponentsBuilder uriComponentsBuilder) throws BindException {
+        if (bindingResult.hasErrors()) {
+            if (bindingResult instanceof BindException exception) {
                 throw exception;
-            }else{
+            } else {
                 throw new BindException(bindingResult);
             }
-        }else{
-            log.info(LOG_APPLICATION_LEVEL + "Have request for registered new sensor with name: " + payload.name());
+        } else {
+            log.info(LOG_APPLICATION_LEVEL + "Have request for registered new sensor with name: {}", payload.name());
             RegisteredSensor sensor = new RegisteredSensor(this.sensorService.registerSensor(payload).getId().toString());
             return ResponseEntity
                     .created(uriComponentsBuilder
@@ -62,48 +62,43 @@ public class SensorsController {
     }
 
     @PostMapping("/{key}/measurements")
-    public void measurements(@PathVariable(name ="key") String key,
+    public void measurements(@PathVariable(name = "key") String key,
                              @Valid @RequestBody MeasurementSensor measurementSensor,
                              BindingResult bindingResult) throws BindException {
-        if(bindingResult.hasErrors()){
-            if (bindingResult instanceof BindException exception){
+        if (bindingResult.hasErrors()) {
+            if (bindingResult instanceof BindException exception) {
                 throw exception;
-            }else{
+            } else {
                 throw new BindException(bindingResult);
             }
-        }else {
+        } else {
             CreateMeasurementsDto newMeasurement = CreateMeasurementsDto.builder()
                     .temp(measurementSensor.value())
                     .rain(measurementSensor.raining())
                     .sensor(SensorDto.builder().id(UUID.fromString(key)).build())
                     .build();
-           MeasurementsDto measurements = measurementsService.measurement(newMeasurement);
-            log.info(LOG_APPLICATION_LEVEL + "Have request of measurements for sensor with id:"
-                    + measurements.getSensor().getId() + " at:"
-                    + measurements.getTimeMeasurements() + " time, save");
+            MeasurementsDto measurements = measurementsService.measurement(newMeasurement);
+            log.info(LOG_APPLICATION_LEVEL + "Have request of measurements for sensor with id:{} at:{} time, save", measurements.getSensor().getId(), measurements.getTimeMeasurements());
         }
     }
 
     @GetMapping
-    public List<CreateSensorDto> activeSensors()  {
+    public List<CreateSensorDto> activeSensors() {
         log.info(LOG_APPLICATION_LEVEL + "Have request about all active sensors");
-            return this.sensorService.allActive();
+        return this.sensorService.allActive();
     }
 
     @GetMapping("/{key}/measurements")
-    public List<MeasurementsDto> measurementsForSensor(@PathVariable(name ="key") String key){
-
-            log.info(LOG_APPLICATION_LEVEL + "Have request for returned list of last 20 measurements for sensor with id: " + key);
-            return measurementsService.getMeasurementsBySensor(key);
-
+    public List<MeasurementsDto> measurementsForSensor(@PathVariable(name = "key") String key) {
+        log.info(LOG_APPLICATION_LEVEL + "Have request for returned list of last 20 measurements for sensor with id: {}", key);
+        return measurementsService.getMeasurementsBySensor(key);
     }
 
     @GetMapping("/measurements")
-    public List<MeasurementsDto> actualMeasurements(){
-
+    public List<MeasurementsDto> actualMeasurements() {
         log.info(LOG_APPLICATION_LEVEL + "Have request for returned list of actual measurements ");
         OffsetDateTime dateTime = OffsetDateTime.now().minusMinutes(1L);
-        return measurementsService.getMeasurementsAfterTimestamp(dateTime);
-
+        return measurementsService.getMeasurementsAfterTimestamp(dateTime);\
     }
+
 }

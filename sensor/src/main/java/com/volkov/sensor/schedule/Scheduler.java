@@ -19,12 +19,12 @@ public class Scheduler {
 
     @Scheduled(fixedDelay = 2000)
     public void measurement() throws Exception {
-        if(!sensorService.haveRegistration()){
+        if (!sensorService.haveRegistration()) {
             sensorService.sensorRegistration();
-        }else {
+        } else {
             Thread.sleep((long) (Math.random() * 1000));
         }
         sensorRestClient.measurement(sensorService.sensorMeasurement());
-        Thread.sleep((long) (Math.random()*12000));
+        Thread.sleep((long) (Math.random() * 12000));
     }
 }

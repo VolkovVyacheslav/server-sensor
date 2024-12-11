@@ -16,7 +16,6 @@ public class ConfigurationSensorServiceImpl implements ConfigurationSensorServic
 
     private static final Logger log = LoggerFactory.getLogger(ConfigurationSensorServiceImpl.class);
 
-
     private static final String PREF_KEY_SERVER_ADDRESS = "server.http.address";
 
     private static final String PREF_KEY_SENSOR_UUID = "sensor.uuid";
@@ -103,7 +102,7 @@ public class ConfigurationSensorServiceImpl implements ConfigurationSensorServic
 
     @Override
     public boolean isRegistered() throws Exception{
-        InputStream is = new FileInputStream(new File(CONFIG_FILE_PATH));
+        InputStream is = new FileInputStream(CONFIG_FILE_PATH);
         Properties props = new Properties();
         props.load(is);
         is.close();
