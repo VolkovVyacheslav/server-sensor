@@ -2,7 +2,6 @@ package com.volkov.server.sensors.service.impl;
 
 import com.volkov.server.sensors.dto.CreateMeasurementsDto;
 import com.volkov.server.sensors.dto.MeasurementsDto;
-import com.volkov.server.sensors.dto.SensorDto;
 import com.volkov.server.sensors.mapper.MeasurementsMapper;
 import com.volkov.server.sensors.repository.MeasurementsRepository;
 import com.volkov.server.sensors.service.MeasurementsService;
